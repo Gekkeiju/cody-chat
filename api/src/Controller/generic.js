@@ -1,5 +1,4 @@
 const Model = require('../Model')
-const User = require('../Model/User')
 
 class GenericController {
     async create(req, res, next) {

@@ -5,9 +5,9 @@ class GenericController {
         const { node } = req.params
         const params = req.body
 
-        await Model[node].create(params)
+        const element = await Model[node].create(params)
 
-        res.send(200, params)
+        res.send(200, element)
         return next()
     }
 

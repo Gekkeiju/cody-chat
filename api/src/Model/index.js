@@ -20,7 +20,15 @@ module.exports = (() => {
     files.map(f => {
         const model = f.replace('.js', '')
         const data = require(`./${model}`)
-        const schema = new Schema(data)
+        const schema = new Schema(
+            data,
+            { 
+                timestamps: { 
+                    createdAt: 'created_at',
+                    updatedAt: 'updated_at'
+                }
+            }
+        )
 
         Models[model] = mongoose.model(model, schema)
     })

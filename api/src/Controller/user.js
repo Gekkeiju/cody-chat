@@ -38,10 +38,12 @@ class UserController {
 
         const user = await User.findOne({ username })
 
-        if(!user) 
+        if(!user) {
             res.send(400, { message: "User does not exist." })
+            return next()
+        }
 
-        const pass = bcrypt.compareSync(password, user.password || '')
+        const pass = bcrypt.compareSync(password, user.password)
 
         if(!pass)
             res.send(400, { message: "Incorrect Username or Password" })

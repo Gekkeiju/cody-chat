@@ -36,7 +36,7 @@ class GenericController {
             { _id },
             params,
             {
-                returnNewDocument: true
+                new: true
             }
         )
 

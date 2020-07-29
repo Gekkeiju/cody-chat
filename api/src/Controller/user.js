@@ -63,7 +63,7 @@ class UserController {
                 active: false
             },
             {
-                returnNewDocument: true
+                new: true
             }
         )
 

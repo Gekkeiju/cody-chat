@@ -17,6 +17,8 @@ module.exports = (server) => {
     /*
     * user */
     // server.get('/user', user.readAll)
+
     server.post('/create_account', user.create)
-    // server.post('/login', user.login)
+    server.post('/login', user.login)
+    server.post('/logout', user.logout)
 }

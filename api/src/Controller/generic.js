@@ -4,7 +4,7 @@ const User = require('../Model/User')
 class GenericController {
     async create(req, res, next) {
         const { node } = req.params
-        const params = { ...req.body }
+        const params = req.body
 
         await Model[node].create(params)
 
@@ -31,7 +31,7 @@ class GenericController {
 
     async update(req, res, next) {
         const { node, _id } = req.params
-        const params = { ...req.body }
+        const params = req.body
 
         const element = await Model[node].findOneAndUpdate(
             { _id },

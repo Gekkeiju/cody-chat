@@ -12,9 +12,9 @@ class UserController {
 
         params.password = hash
 
-        await User.create(params)
+        const user = await User.create(params)
 
-        res.send(200, params)
+        res.send(200, user)
         return next()
     }
 
@@ -33,28 +33,29 @@ class UserController {
 
         if(!user)
             res.send(400, { error: "No user" })
-
-        const pass = bcrypt.compareSync(password, user.hash)
+        
+        const pass = bcrypt.compareSync(password, user.password)
 
         if(!pass)
             res.send(400, { error: "Incorrect Username or Password" })
 
         if(user && pass) {
-            await UserSession.create({
-                user_id,
-                active: true
-            })
+            const { _id: session_id } =
+                await UserSession.create({
+                    user_id: user._id,
+                    active: true
+                })
 
-            res.send(200, { session_id: "sess" })
+            res.send(200, { session_id })
         }
-        
+
         return next()
     }
 
     async logout(req, res, next) {
-        const { _id } = req.query
+        const { session_id: _id } = req.body
 
-        UserSession.findOneAndUpdate(
+        const session = await UserSession.findOneAndUpdate(
             {
                 _id
             },
@@ -62,11 +63,15 @@ class UserController {
                 active: false
             },
             {
-                returnNewDocument: false
+                returnNewDocument: true
             }
         )
 
-        res.send(200, { logged_out: true })
+        if(session && !session.active)
+            res.send(200, { logged_out: !session.active })
+        else
+            res.send(500, { error: 'error'})
+            
         return next()
     }
 }

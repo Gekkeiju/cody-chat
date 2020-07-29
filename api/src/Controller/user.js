@@ -5,16 +5,23 @@ const bcrypt = require('bcrypt')
 class UserController {
     async create(req, res, next) {
         const params = req.body
+
         const { password } = params
         
         const salt = bcrypt.genSaltSync(10)
         const hash = bcrypt.hashSync(password, salt)
 
         params.password = hash
-
+        
         const user = await User.create(params)
+            .catch(error => {
+                res.send(400, { message: "username exists"})
+                return error
+            })
 
-        res.send(200, user)
+        if(user._id)
+            res.send(200, user)
+
         return next()
     }
 

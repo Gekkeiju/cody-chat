@@ -1,7 +1,8 @@
-module.exports = (mongoose) => {
-    const { Schema } = mongoose
-    const fs = require('fs')
+const fs = require('fs')
+const mongoose = require('mongoose')
+const { Schema } = mongoose
 
+module.exports = (() => {
     //get files with schema values
     let files = fs.readdirSync(__dirname, (err, files) => {
         if(err) {
@@ -10,9 +11,10 @@ module.exports = (mongoose) => {
 
         return files
     })
-
     //remove self from array
     files = files.filter(f => f !== 'index.js')
+
+    const Models = {}
 
     //create models
     files.map(f => {
@@ -20,6 +22,8 @@ module.exports = (mongoose) => {
         const data = require(`./${model}`)
         const schema = new Schema(data)
 
-        mongoose.model(model, schema)
+        Models[model] = mongoose.model(model, schema)
     })
-}
+
+    return Models
+})()

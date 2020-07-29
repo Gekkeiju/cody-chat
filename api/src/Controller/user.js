@@ -15,7 +15,7 @@ class UserController {
         
         const user = await User.create(params)
             .catch(error => {
-                res.send(400, { message: "username exists"})
+                res.send(400, { message: "Username already in use."})
                 return error
             })
 
@@ -38,13 +38,13 @@ class UserController {
 
         const user = await User.findOne({ username })
 
-        if(!user)
-            res.send(400, { error: "No user" })
-        
-        const pass = bcrypt.compareSync(password, user.password)
+        if(!user) 
+            res.send(400, { message: "User does not exist." })
+
+        const pass = bcrypt.compareSync(password, user.password || '')
 
         if(!pass)
-            res.send(400, { error: "Incorrect Username or Password" })
+            res.send(400, { message: "Incorrect Username or Password" })
 
         if(user && pass) {
             const { _id: session_id } =
@@ -53,7 +53,7 @@ class UserController {
                     active: true
                 })
 
-            res.send(200, { session_id })
+            res.send(200, { user, session_id })
         }
 
         return next()
@@ -77,7 +77,7 @@ class UserController {
         if(session && !session.active)
             res.send(200, { logged_out: !session.active })
         else
-            res.send(500, { error: 'error'})
+            res.send(500, { message: 'Something went wrong.'})
             
         return next()
     }

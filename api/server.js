@@ -1,5 +1,6 @@
 const restify = require('restify')
 const mongoose = require('mongoose')
+const corsMiddleware = require('restify-cors-middleware')
 
 const routes = require('./src/Route')
 
@@ -9,7 +10,7 @@ String.prototype.capitalizeFirstLetter = function() {
 
 /*
 * Connection Parameters  */
-const PORT = 6969
+const PORT = 7000
 const DB = 'mongodb://localhost/mockchat'
 const DB_OPTIONS = {
     useNewUrlParser: true,
@@ -28,6 +29,14 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 /*
 * Restify Server */
 const server = restify.createServer()
+const cors = corsMiddleware({
+    origins: ['*'],
+    allowHeaders: ['*'],
+    exposeHeaders: ['*']
+})
+
+server.pre(cors.preflight)
+server.use(cors.actual)
 server.use(restify.plugins.bodyParser({
     mapParams: true
 }))

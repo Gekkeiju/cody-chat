@@ -1,5 +1,5 @@
 module.exports = {
-    name: 'string',
+    username: 'string',
     password: 'string',
-    profile: 'string'
+    contacts: 'array'
 }

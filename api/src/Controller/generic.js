@@ -1,10 +1,10 @@
 const Model = require('../Model')
+const User = require('../Model/User')
 
 class GenericController {
     async create(req, res, next) {
         const { node } = req.params
         const params = { ...req.body }
-        
 
         await Model[node].create(params)
 
@@ -45,8 +45,13 @@ class GenericController {
         return next()
     }
 
-    async delete() {
+    async delete(req, res, next) {
+        const { node, _id } = req.params
         
+        await Model[node].deleteOne({ _id })
+
+        res.send(200, { deleted: true })
+        return next()
     }
 }
 

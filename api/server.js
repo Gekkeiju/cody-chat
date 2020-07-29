@@ -31,10 +31,13 @@ const server = restify.createServer()
 server.use(restify.plugins.bodyParser({
     mapParams: true
 }))
+server.use(restify.plugins.queryParser({
+    mapParams: false
+}))
 server.use((req, res, next) => {
     if(req.params.node)
         req.params.node = req.params.node.capitalizeFirstLetter()
-        
+
     return next()
 })
 

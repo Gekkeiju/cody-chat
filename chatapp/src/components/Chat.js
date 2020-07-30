@@ -44,7 +44,6 @@ class Chat extends React.Component {
             })
         })
         .catch(er => {
-            console.log('ERROR: ', er)
             this.setState({
                 errorMessage: er.response.data.message
             })
@@ -114,7 +113,6 @@ class Chat extends React.Component {
     }
 
     componentDidUpdate(){
-        console.log(this.state)
     }
 
     render() {

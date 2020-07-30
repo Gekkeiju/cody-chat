@@ -76,7 +76,6 @@ class Login extends React.Component {
     }
 
     componentDidUpdate(){
-        console.log("state: ", this.state)
     }
   
     render() {

@@ -146,7 +146,9 @@ class Login extends React.Component {
                 { this.state.isSigningUp ? (
                     <p className="disclaimer">
                         By signing up, you agree to the Terms of service and Privacy Policy, including Cookie Use. Others will be able to find you by searching for your email address or phone number when provided.
-                    </p> ) : (<p/>)
+                    </p> ) : (<p>
+                        Type any username and password for new account.
+                    </p>)
                 }
                 
             </div>

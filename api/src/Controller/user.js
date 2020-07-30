@@ -25,14 +25,6 @@ class UserController {
         return next()
     }
 
-    // async getContacts(req, res, next) {
-
-    // }
-
-    // async getContact(req, res, next) {
-
-    // }
-
     async login(req, res, next) {
         const { username, password } = req.body
 

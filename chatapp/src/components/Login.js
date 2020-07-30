@@ -1,8 +1,9 @@
 import React from 'react'
 import axios from 'axios'
-import config from '../config'
 import { Redirect } from 'react-router-dom'
 import Spinner from 'react-svg-spinner'
+
+import config from '../config'
 
 class Login extends React.Component {
     constructor(props) {
@@ -14,8 +15,8 @@ class Login extends React.Component {
             user: null,
             session_id: '',
             isSubmitting: false,
-            isAuthenticated: false,
-            errorMessage: ''
+            errorMessage: '',
+            isAuthenticated: false
         }
     }
 
@@ -36,7 +37,7 @@ class Login extends React.Component {
                 password: this.state.password
             }
         })
-        .then(({ user, session_id}) => {
+        .then(({ data: { user, session_id }}) => {
             this.setState({
                 user,
                 session_id,
@@ -57,6 +58,8 @@ class Login extends React.Component {
         this.setState(prev => ({
             isSubmitting: !prev.isSubmitting
         }))
+
+        return this.state.isSubmitting
     }
 
     handleUsername = (e) => {
@@ -72,16 +75,16 @@ class Login extends React.Component {
     }
 
     componentDidUpdate(){
-        console.log('ERROR: ', this.state.errorMessage)
+        console.log("state: ", this.state)
     }
   
     render() {
-        if(this.state.isAuthenticated) {
+        if(this.state.isAuthenticated){
             return (
                 <Redirect
                     to = {{
                         pathname: "/chat",
-                        state: {user: this.state.user, session_id: this.state.session_id }
+                        state: {user: this.state.user, session_id: this.state.session_id, isAuthenticated: this.state.isAuthenticated }
                     }}
                 />
             )

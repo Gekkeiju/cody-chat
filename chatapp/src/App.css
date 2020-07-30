@@ -74,16 +74,60 @@
 }
 
 .chatWindow {
-  background: #FFFFFF;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  min-width: 330px;
+  min-height: 330px;
 }
+
 .chatInputWrapper {
-  display: inline-block;
-  vertical-align: top;
+  display: flex;
+  width: 100vw;
+}
+
+input.textarea {
+  height: 50px;
+  background: #f5f8fa;
+  border: none;
+  outline: none;
+  color: #666;
+  font-weight: 400;
+  width: 90%;
+}
+
+.send {
+  color: #FFFFFF;
+  background: #777777;
+  width: 10%;
+}
+
+.chathead {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.title {
+  flex:10;
+}
+
+.logoutform {
+  flex: 1;
+}
+
+.logout {
+  color: #FFFFFF;
+  background: #777777;
 }
 
 ::-webkit-scrollbar {
   display: none;
 }
+
 /* M E S S A G E S */
 .chat {
   list-style: none;
@@ -95,13 +139,14 @@
   max-height: 400px;
   overflow: scroll;
   scroll-behavior: smooth;
+  width: 100%;
 }
 .chat li {
   padding: 0.5rem;
   overflow: hidden;
   display: flex;
 }
-.other .msg {
+.other .messsage {
   order: 1;
   border-top-left-radius: 0px;
   box-shadow: -1px 2px 0px #88e306;
@@ -111,13 +156,13 @@
   justify-content: flex-end;
   align-items: flex-end;
 }
-.self .msg {
+.self .message {
   order: 1;
   border-bottom-right-radius: 0px;
   box-shadow: 1px 2px 0px #d4d4d4;
 }
 
-.msg {
+.message {
   background: #88e306;
   color: #FFFFFF;
   min-width: fit-content;
@@ -126,18 +171,6 @@
   box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.07);
   display: flex;
   flex-direction: column;
-}
-.msg p {
-  font-size: 0.8rem;
-  margin: 0 0 0.2rem 0;
-  color: rgb(81, 84, 255);
-}
-
-.send {
-  color: #FFFFFF;
-  background: #777777;
-  display: inline-block;
-  vertical-align: top;
 }
 
 input {
@@ -150,22 +183,19 @@ input {
   border: 0;
 }
 
-input.textarea {
-  height: 50px;
-  background: #f5f8fa;
-  border: none;
-  outline: none;
-  color: #666;
-  font-weight: 400;
-  display: inline-block;
-  vertical-align: top;
-}
-
 hr {
   width: 100%;
 }
 
-p {
+.otheruser {
+  text-align: left;
+  font-size: 0.8rem;
+  margin: 0 0 0.2rem 0;
+  color: #647787;
+}
+
+.selfuser {
+  text-align: right;
   font-size: 0.8rem;
   margin: 0 0 0.2rem 0;
   color: #647787;

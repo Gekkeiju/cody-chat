@@ -122,10 +122,14 @@ class Chat extends React.Component {
 
         return (
             <div className="chatWindow">
-                <h1>Chat app</h1>
-                <form onSubmit={this.logout}>
-                    <input className="send" type="submit" value="Log out" />
-                </form>
+                <div className="chathead">
+                    <div className="title">
+                        <h1>Chat app</h1>
+                    </div>
+                    <form className="logoutform" onSubmit={this.logout}>
+                        <input className="logout" type="submit" value="Log out" />
+                    </form>
+                </div>
                 <hr></hr>
                 <ul className="chat" id="chats">
                     {this.state.messages.map(msg => (
@@ -135,13 +139,14 @@ class Chat extends React.Component {
                                     <div className="message">
                                         {msg.body}        
                                     </div>
+                                    <p className={this.state.user.username === msg.sender ? "selfuser" : "otheruser"}>{msg.sender}</p>
                                 </div>
                             </li>
                         </div>
                     ))}
                 </ul>
                 <div className="chatInputWrapper">
-                    <form onSubmit={this.handleSubmit}>
+                    <form className="chatInputWrapper" onSubmit={this.handleSubmit}>
                         <input
                             className="textarea input"
                             type="text"

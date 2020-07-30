@@ -13,7 +13,11 @@ class GenericController {
 
     async readAll(req, res, next) {
         const { node } = req.params
-        const elements = await Model[node].find()
+        const elements = await Model[node].find(null, null,{
+            sort: {
+                created_at: 1
+            }
+        })
 
         res.send(elements)
         return next()

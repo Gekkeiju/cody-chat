@@ -10,9 +10,12 @@ String.prototype.capitalizeFirstLetter = function() {
 
 /*
 * Connection Parameters  */
-const PORT = 7000
-const DB = 'mongodb://localhost/mockchat'
+const PORT = process.env.PORT || 7000
+const DB = 'mongodb+srv://cluster0.ijrt4.gcp.mongodb.net/<dbname>?retryWrites=true&w=majority'
 const DB_OPTIONS = {
+    dbName: process.env.DB_NAME || 'mockchat',
+    user: process.env.DB_USER || 'juan-dummy',
+    pass: process.env.DB_PASS || 'CkODfcLFfNWgH1xz',
     useNewUrlParser: true,
     useFindAndModify: false
 }

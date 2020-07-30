@@ -12,11 +12,11 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
-            user: null,
-            session_id: '',
+            user: this.props.location.state ? this.props.location.state.user : null,
+            session_id: this.props.location.state ? this.props.location.state.session_id : '',
             isSubmitting: false,
             errorMessage: '',
-            isAuthenticated: false
+            isAuthenticated: this.props.location.state ? this.props.location.state.user : false
         }
     }
 
@@ -45,6 +45,7 @@ class Login extends React.Component {
             })
         })
         .catch((er) => {
+            if(er.response)
             this.setState({
                 errorMessage: er.response.data.message
             })

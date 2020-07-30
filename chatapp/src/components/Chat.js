@@ -9,15 +9,15 @@ class Chat extends React.Component {
         super(props)
 
         this.state = {
-            user: this.props.location.state.user,
-            session_id: this.props.location.state.session_id,
+            user: this.props.location.state ? this.props.location.state.user : {},
+            session_id: this.props.location.state ? this.props.location.state.session_id : '',
             messages: [],
             newMessage: null,
             errorMessage: '',
-            isAuthenticated: this.props.location.state.isAuthenticated
+            isAuthenticated: this.props.location.state ? this.props.location.state.isAuthenticated : false
         }
     }
-
+    
     sendMessage = () => {
         const {
             newMessage: body,
@@ -34,7 +34,6 @@ class Chat extends React.Component {
         })
         .then((result) => {
             this.setState(prev => {
-                console.log('previos: ', prev)
                 const messages = prev.messages
                 messages.push(result.data)
 
@@ -56,7 +55,8 @@ class Chat extends React.Component {
 
     scrollToBottom = () => {
         const chat = document.getElementById("chats")
-        chat.scrollTop = chat.scrollHeight
+        if(chat)
+            chat.scrollTop = chat.scrollHeight
     }
 
     handleSubmit = event => {
@@ -86,9 +86,31 @@ class Chat extends React.Component {
         })
     }
 
+    logout = () => {
+        axios({
+            method: 'post',
+            url: `${config.DEFAULT_API}/logout`,
+            data: {
+                session_id: this.state.session_id
+            }
+        })
+        .then(result => {
+            const { data: logged_out } = result
+
+            if(logged_out)
+                this.setState({
+                    isAuthenticated: false,
+                    session_id: false,
+                    user: {},
+                    messages: [],
+                    newMessage: null,
+                    errorMessage: ''
+                })
+        })
+    }
+
     componentDidMount() {
         this.messageListener()
-        this.scrollToBottom()
     }
 
     componentDidUpdate(){
@@ -97,20 +119,21 @@ class Chat extends React.Component {
 
     render() {
         if(!this.state.isAuthenticated) {
-            return <Redirect to="/" />
+            return <Redirect to="/" state={{isAuthenticated: this.state.isAuthenticated, user: this.state.user, session_id: this.state.session_id}} />
         }
 
         return (
             <div className="chatWindow">
                 <h1>Chat app</h1>
-                <input className="send" type="submit" value="Log out" />
+                <form onSubmit={this.logout}>
+                    <input className="send" type="submit" value="Log out" />
+                </form>
                 <hr></hr>
                 <ul className="chat" id="chats">
                     {this.state.messages.map(msg => (
                         <div key={msg._id}>
                             <li className={this.state.user.username === msg.sender ? "self" : "other"}>
                                 <div className="msg">
-                                    <p>{msg && msg.sender ? msg.sender.username: ''}</p>
                                     <div className="message">
                                         {msg.body}        
                                     </div>

@@ -131,7 +131,7 @@ class Chat extends React.Component {
                             className="send"
                             type="submit"
                             value="send"
-                            disabled={this.state.newMessage === ''}
+                            disabled={this.state.newMessage === null}
                         />
                     </form>
                 </div>

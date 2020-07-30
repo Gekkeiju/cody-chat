@@ -16,15 +16,44 @@ class Login extends React.Component {
             session_id: this.props.location.state ? this.props.location.state.session_id : '',
             isSubmitting: false,
             errorMessage: '',
-            isAuthenticated: this.props.location.state ? this.props.location.state.user : false
+            isAuthenticated: this.props.location.state ? this.props.location.state.user : false,
+            isSigningUp: false
         }
     }
 
     onSubmit = (e) => {
-        if(this.state.username !== '') {
+        if(this.state.isSigningUp) {
+            e.preventDefault()
+            this.signup()
+        }else if(this.state.username !== '') {
             e.preventDefault()
             this.login()
         }
+    }
+
+    signup = () => {
+        this.toggleIsSubmitting()
+        axios({
+            method: 'post',
+            url: `${config.DEFAULT_API}/create_account`,
+            data: {
+                username: this.state.username,
+                password: this.state.password
+            }
+        })
+        .then(({ data: { user } }) => {
+            this.setState({
+                isSigningUp: false
+            })
+            this.login()
+        })
+        .catch((er) => {
+            if(er.response) {
+                this.setState({
+                    errorMessage: er.response.data.message,
+                })
+            }
+        })
     }
 
     login = () => {
@@ -45,10 +74,15 @@ class Login extends React.Component {
             })
         })
         .catch((er) => {
-            if(er.response)
-            this.setState({
-                errorMessage: er.response.data.message
-            })
+            if(er.response) {
+                const newUser = er.response.data.message === "User does not exist."
+                const errorMessage = newUser ?  "Press the button again to sign up and log in!" : er.response.data.message
+                this.setState({
+                    errorMessage,
+                    isSigningUp: newUser
+                })
+            }
+            
 
             this.toggleIsSubmitting()
             console.error(er)
@@ -108,10 +142,13 @@ class Login extends React.Component {
                             value="Sign up / Log in"
                         />
                     )}
+                </form>
+                { this.state.isSigningUp ? (
                     <p className="disclaimer">
                         By signing up, you agree to the Terms of service and Privacy Policy, including Cookie Use. Others will be able to find you by searching for your email address or phone number when provided.
-                    </p>
-                </form>
+                    </p> ) : (<p/>)
+                }
+                
             </div>
         )
     }
